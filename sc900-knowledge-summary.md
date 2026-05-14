@@ -1,18 +1,54 @@
 # SC-900 Knowledge Summary
 
-This repository currently contains an applicator scaffold copied from the AZ-900 implementation.
+This repository now uses SC-900-focused quiz and flash card content aligned to Microsoft Learn resources.
 
-## Status
+## Primary Sources (Microsoft Learn)
 
-- ✅ SC-900-branded applicator shell is in place
-- ⚠️ SC-900 curriculum content is not yet curated in this file
+- SC-900 Study Guide (skills measured):  
+  https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/sc-900
+- Learning path: Describe concepts of security, compliance, and identity  
+  https://learn.microsoft.com/en-us/training/paths/describe-concepts-of-security-compliance-identity/
+- Learning path: Introduction to Microsoft Entra  
+  https://learn.microsoft.com/en-us/training/paths/describe-capabilities-of-microsoft-identity-access/
+- Learning path: Introduction to Microsoft security solutions  
+  https://learn.microsoft.com/en-us/training/paths/describe-capabilities-of-microsoft-security-solutions/
+- Learning path: Introduction to Microsoft Purview and privacy principles  
+  https://learn.microsoft.com/en-us/training/paths/describe-capabilities-of-microsoft-compliance-solutions/
 
-## TODO
+## Skills-Measured Domain Model Used in This App
 
-Add SC-900-aligned study content focused on:
+- Describe the concepts of security, compliance, and identity (10–15%)
+- Describe the capabilities of Microsoft Entra (25–30%)
+- Describe the capabilities of Microsoft security solutions (30–35%)
+- Describe the capabilities of Microsoft compliance solutions (25–30%)
 
-- Security concepts and methodologies
-- Identity and access management concepts
-- Microsoft Entra capabilities
-- Microsoft security solutions
-- Microsoft compliance solutions
+## Module Model Used in This App
+
+### Security, Compliance, and Identity Concepts
+- Security & Compliance Concepts
+- Identity Concepts
+
+### Microsoft Entra Capabilities
+- Entra ID Fundamentals
+- Entra Authentication
+- Entra Access Management
+- Entra Identity Protection & Governance
+
+### Microsoft Security Solutions
+- Security Copilot
+- Azure Infrastructure Security
+- Azure Security Management
+- Microsoft Sentinel
+- Microsoft Defender XDR
+
+### Microsoft Compliance Solutions
+- Service Trust & Privacy
+- Purview Data Security
+- Purview Data Compliance
+- Purview Data Governance
+
+## Notes
+
+- Quiz mode and flash card mode use the same `QUESTIONS` bank and schema.
+- Every question keeps direct Microsoft Learn module links (`learnUrl` / `pageUrl`).
+- The app remains offline-capable at runtime, but source research is Microsoft Learn-first.
