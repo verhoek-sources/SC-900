@@ -25,9 +25,10 @@
       --text: #1B1B1B;
       --muted: #6B7280;
       --border: #E5E7EB;
-      --cc: #0078D4;
-      --arch: #107C10;
-      --gov: #8764B8;
+      --concepts: #0078D4;
+      --entra: #107C10;
+      --security: #d83b01;
+      --compliance: #8764B8;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -134,9 +135,10 @@
       font-weight: 600;
       color: #fff;
     }
-    .badge-cc   { background: var(--cc); }
-    .badge-arch { background: var(--arch); }
-    .badge-gov  { background: var(--gov); }
+    .badge-concepts   { background: var(--concepts); }
+    .badge-entra      { background: var(--entra); }
+    .badge-security   { background: var(--security); }
+    .badge-compliance { background: var(--compliance); }
     .progress-text { color: var(--muted); font-size: 0.875rem; }
 
     /* ── Question ────────────────────────────── */
@@ -553,7 +555,7 @@
     </div>
     <div class="container">
       <div class="quiz-meta">
-        <span class="topic-badge badge-cc" id="topic-badge">Topic</span>
+        <span class="topic-badge badge-concepts" id="topic-badge">Topic</span>
         <span class="progress-text" id="progress-text">Question 1 / 60</span>
         <div class="quiz-meta-actions">
           <button type="button" class="btn-home-quiz" onclick="goHome()">&#8962; Home</button>
@@ -646,7 +648,7 @@
     </div>
     <div class="container">
       <div class="quiz-meta">
-        <span class="topic-badge badge-cc" id="fc-topic-badge">Topic</span>
+        <span class="topic-badge badge-concepts" id="fc-topic-badge">Topic</span>
         <span class="progress-text" id="fc-progress-text">Card 1 / 166</span>
         <button type="button" class="btn-restart" onclick="confirmFcRestart()">&#8635; Restart</button>
       </div>
@@ -698,44 +700,54 @@
   <script>
     // ── Constants ─────────────────────────────────────────────────
     const DOMAIN_BADGE = {
-      'Cloud Concepts':                  'badge-cc',
-      'Azure Architecture & Services':   'badge-arch',
-      'Azure Management & Governance':   'badge-gov'
+      'Describe security, compliance, and identity concepts': 'badge-concepts',
+      'Describe the capabilities of Microsoft Entra': 'badge-entra',
+      'Describe the capabilities of Microsoft security solutions': 'badge-security',
+      'Describe the capabilities of Microsoft compliance solutions': 'badge-compliance'
     };
     const DOMAIN_COLOR = {
-      'Cloud Concepts':                  '#0078D4',
-      'Azure Architecture & Services':   '#107C10',
-      'Azure Management & Governance':   '#8764B8'
+      'Describe security, compliance, and identity concepts': '#0078D4',
+      'Describe the capabilities of Microsoft Entra': '#107C10',
+      'Describe the capabilities of Microsoft security solutions': '#d83b01',
+      'Describe the capabilities of Microsoft compliance solutions': '#8764B8'
     };
     const DOMAIN_WEIGHT = {
-      'Cloud Concepts':                  '25–30%',
-      'Azure Architecture & Services':   '35–40%',
-      'Azure Management & Governance':   '30–35%'
+      'Describe security, compliance, and identity concepts': '10–15%',
+      'Describe the capabilities of Microsoft Entra': '25–30%',
+      'Describe the capabilities of Microsoft security solutions': '35–40%',
+      'Describe the capabilities of Microsoft compliance solutions': '20–25%'
     };
     const HISTORY_KEY    = 'sc900-quiz-history';
     const SESSION_KEY    = 'sc900-quiz-session';
     const PASS_THRESHOLD = 0.70;
 
     const MODULE_URL = {
-      'Cloud Computing':         'https://learn.microsoft.com/en-us/training/modules/describe-cloud-compute/',
-      'Cloud Benefits':          'https://learn.microsoft.com/en-us/training/modules/describe-benefits-use-cloud-services/',
-      'Service Types':           'https://learn.microsoft.com/en-us/training/modules/describe-cloud-service-types/',
-      'Core Architecture':       'https://learn.microsoft.com/en-us/training/modules/describe-core-architectural-components-of-azure/',
-      'Compute & Networking':    'https://learn.microsoft.com/en-us/training/modules/describe-azure-compute-networking-services/',
-      'Storage':                 'https://learn.microsoft.com/en-us/training/modules/describe-azure-storage-services/',
-      'Identity & Security':     'https://learn.microsoft.com/en-us/training/modules/describe-azure-identity-access-security/',
-      'Cost Management':         'https://learn.microsoft.com/en-us/training/modules/describe-cost-management-azure/',
-      'Governance & Compliance': 'https://learn.microsoft.com/en-us/training/modules/describe-features-tools-azure-for-governance-compliance/',
-      'Resource Management':     'https://learn.microsoft.com/en-us/training/modules/describe-features-tools-manage-deploy-azure-resources/',
-      'Monitoring':              'https://learn.microsoft.com/en-us/training/modules/describe-monitoring-tools-azure/'
+      'Security Concepts': 'https://learn.microsoft.com/training/courses/sc-900t00',
+      'Compliance Concepts': 'https://learn.microsoft.com/training/courses/sc-900t00',
+      'Identity Concepts': 'https://learn.microsoft.com/training/courses/sc-900t00',
+      'Entra ID Fundamentals': 'https://learn.microsoft.com/training/courses/sc-900t00',
+      'Authentication & Access': 'https://learn.microsoft.com/training/courses/sc-900t00',
+      'Identity Governance': 'https://learn.microsoft.com/training/courses/sc-900t00',
+      'Defender XDR': 'https://learn.microsoft.com/training/courses/sc-900t00',
+      'Defender for Cloud': 'https://learn.microsoft.com/training/courses/sc-900t00',
+      'Microsoft Sentinel': 'https://learn.microsoft.com/training/courses/sc-900t00',
+      'Microsoft Purview': 'https://learn.microsoft.com/training/courses/sc-900t00',
+      'Data Lifecycle & Records': 'https://learn.microsoft.com/training/courses/sc-900t00',
+      'Risk & eDiscovery': 'https://learn.microsoft.com/training/courses/sc-900t00'
     };
 
     const DOMAIN_MODULES = {
-      'Cloud Concepts':                ['Cloud Computing', 'Cloud Benefits', 'Service Types'],
-      'Azure Architecture & Services': ['Core Architecture', 'Compute & Networking', 'Storage', 'Identity & Security'],
-      'Azure Management & Governance': ['Cost Management', 'Governance & Compliance', 'Resource Management', 'Monitoring']
+      'Describe security, compliance, and identity concepts': ['Security Concepts', 'Compliance Concepts', 'Identity Concepts'],
+      'Describe the capabilities of Microsoft Entra': ['Entra ID Fundamentals', 'Authentication & Access', 'Identity Governance'],
+      'Describe the capabilities of Microsoft security solutions': ['Defender XDR', 'Defender for Cloud', 'Microsoft Sentinel'],
+      'Describe the capabilities of Microsoft compliance solutions': ['Microsoft Purview', 'Data Lifecycle & Records', 'Risk & eDiscovery']
     };
-    const DOMAIN_ORDER = ['Cloud Concepts', 'Azure Architecture & Services', 'Azure Management & Governance'];
+    const DOMAIN_ORDER = [
+      'Describe security, compliance, and identity concepts',
+      'Describe the capabilities of Microsoft Entra',
+      'Describe the capabilities of Microsoft security solutions',
+      'Describe the capabilities of Microsoft compliance solutions'
+    ];
 
     // ── State ──────────────────────────────────────────────────────
     let shuffled        = [];
@@ -1228,7 +1240,7 @@
       // Topic badge
       const badge = document.getElementById('topic-badge');
       badge.textContent = q.topic;
-      badge.className   = 'topic-badge ' + (DOMAIN_BADGE[q.topic] || 'badge-cc');
+      badge.className   = 'topic-badge ' + (DOMAIN_BADGE[q.topic] || 'badge-concepts');
 
       // Counter
       document.getElementById('progress-text').textContent =
@@ -1668,7 +1680,7 @@
 
       const badge = document.getElementById('fc-topic-badge');
       badge.textContent = q.topic;
-      badge.className   = 'topic-badge ' + (DOMAIN_BADGE[q.topic] || 'badge-cc');
+      badge.className   = 'topic-badge ' + (DOMAIN_BADGE[q.topic] || 'badge-concepts');
 
       document.getElementById('fc-question').textContent = q.question;
 
