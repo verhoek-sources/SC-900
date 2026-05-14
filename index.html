@@ -967,7 +967,7 @@
       return 'score-red';
     }
     function answeredCount(list = userAnswers) {
-      return list.filter(Boolean).length;
+      return list.filter(v => v !== null && v !== undefined).length;
     }
     function firstUnansweredIndex(list, total) {
       for (let i = 0; i < total; i++) {
@@ -1052,10 +1052,10 @@
       const resumeSection = document.getElementById('resume-section');
       if (session) {
         resumeSection.classList.remove('hidden');
-        const answered = answeredCount(session.userAnswers);
+        const answeredQuestions = answeredCount(session.userAnswers);
         const total    = session.shuffledIndices.length;
         document.getElementById('resume-info').textContent =
-          `Question ${session.currentIdx + 1} of ${total} · ${answered} answered`;
+          `Question ${session.currentIdx + 1} of ${total} · ${answeredQuestions} answered`;
       } else {
         resumeSection.classList.add('hidden');
       }
@@ -1454,7 +1454,7 @@
       if (answered || !Array.isArray(currentMultiSelections)) return;
       currentMultiSelections[statementIdx] = value;
       document.querySelectorAll(`.tf-btn[data-statement="${statementIdx}"]`).forEach(btn => {
-        const btnVal = btn.dataset.value === 'true';
+        const btnVal = getTfBtnValue(btn);
         btn.classList.toggle('selected', btnVal === value);
       });
       const submitBtn = document.getElementById('multi-submit-btn');
@@ -1483,6 +1483,12 @@
       updateRetryButtonQuiz();
       document.getElementById('next-btn').classList.remove('hidden');
     }
+    function parseStringToBoolean(value) {
+      return value === 'true';
+    }
+    function getTfBtnValue(btn) {
+      return parseStringToBoolean(btn.dataset.value);
+    }
 
     function submitMultiStatementAnswer() {
       if (answered) return;
@@ -1506,7 +1512,7 @@
       document.querySelectorAll('.tf-btn').forEach(btn => {
         btn.disabled = true;
         const si = Number(btn.dataset.statement);
-        const btnVal = btn.dataset.value === 'true';
+        const btnVal = getTfBtnValue(btn);
         if (btnVal === q.answer[si]) btn.classList.add('correct');
         else if (btnVal === currentMultiSelections[si]) btn.classList.add('wrong');
       });
@@ -1520,7 +1526,7 @@
       document.querySelectorAll('.tf-btn').forEach(btn => {
         btn.disabled = true;
         const si = Number(btn.dataset.statement);
-        const btnVal = btn.dataset.value === 'true';
+        const btnVal = getTfBtnValue(btn);
         if (btnVal === q.answer[si]) btn.classList.add('correct');
         else if (Array.isArray(prevAnswer.selectedTf) && btnVal === prevAnswer.selectedTf[si]) btn.classList.add('wrong');
       });
