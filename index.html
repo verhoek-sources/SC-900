@@ -25,9 +25,10 @@
       --text: #1B1B1B;
       --muted: #6B7280;
       --border: #E5E7EB;
-      --cc: #0078D4;
-      --arch: #107C10;
-      --gov: #8764B8;
+      --concepts: #0078D4;
+      --entra: #107C10;
+      --security: #d83b01;
+      --compliance: #8764B8;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -134,9 +135,10 @@
       font-weight: 600;
       color: #fff;
     }
-    .badge-cc   { background: var(--cc); }
-    .badge-arch { background: var(--arch); }
-    .badge-gov  { background: var(--gov); }
+    .badge-concepts   { background: var(--concepts); }
+    .badge-entra      { background: var(--entra); }
+    .badge-security   { background: var(--security); }
+    .badge-compliance { background: var(--compliance); }
     .progress-text { color: var(--muted); font-size: 0.875rem; }
 
     /* ── Question ────────────────────────────── */
@@ -167,6 +169,18 @@
     .option-btn:disabled { cursor: default; }
     .option-btn.correct { border-color: var(--green); background: #F0FFF0; color: var(--green); font-weight: 600; }
     .option-btn.wrong   { border-color: var(--red);   background: #FFF0F0; color: var(--red); font-weight: 600; }
+    .option-btn.selected { border-color: var(--blue); background: #EBF4FF; font-weight: 600; }
+    .multi-statement-list { display: flex; flex-direction: column; gap: 12px; }
+    .multi-statement-row {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      background: #fff;
+    }
+    .multi-statement-text { margin-bottom: 8px; font-size: 0.92rem; line-height: 1.45; }
+    .multi-statement-actions { display: flex; gap: 8px; }
+    .tf-btn { margin-bottom: 0; flex: 1; text-align: center; }
+    .multi-submit-btn { margin-top: 12px; }
 
     /* ── Explanation ─────────────────────────── */
     .explanation {
@@ -553,7 +567,7 @@
     </div>
     <div class="container">
       <div class="quiz-meta">
-        <span class="topic-badge badge-cc" id="topic-badge">Topic</span>
+        <span class="topic-badge badge-concepts" id="topic-badge">Topic</span>
         <span class="progress-text" id="progress-text">Question 1 / 60</span>
         <div class="quiz-meta-actions">
           <button type="button" class="btn-home-quiz" onclick="goHome()">&#8962; Home</button>
@@ -646,7 +660,7 @@
     </div>
     <div class="container">
       <div class="quiz-meta">
-        <span class="topic-badge badge-cc" id="fc-topic-badge">Topic</span>
+        <span class="topic-badge badge-concepts" id="fc-topic-badge">Topic</span>
         <span class="progress-text" id="fc-progress-text">Card 1 / 166</span>
         <button type="button" class="btn-restart" onclick="confirmFcRestart()">&#8635; Restart</button>
       </div>
@@ -698,44 +712,54 @@
   <script>
     // ── Constants ─────────────────────────────────────────────────
     const DOMAIN_BADGE = {
-      'Cloud Concepts':                  'badge-cc',
-      'Azure Architecture & Services':   'badge-arch',
-      'Azure Management & Governance':   'badge-gov'
+      'Describe security, compliance, and identity concepts': 'badge-concepts',
+      'Describe the capabilities of Microsoft Entra': 'badge-entra',
+      'Describe the capabilities of Microsoft security solutions': 'badge-security',
+      'Describe the capabilities of Microsoft compliance solutions': 'badge-compliance'
     };
     const DOMAIN_COLOR = {
-      'Cloud Concepts':                  '#0078D4',
-      'Azure Architecture & Services':   '#107C10',
-      'Azure Management & Governance':   '#8764B8'
+      'Describe security, compliance, and identity concepts': '#0078D4',
+      'Describe the capabilities of Microsoft Entra': '#107C10',
+      'Describe the capabilities of Microsoft security solutions': '#d83b01',
+      'Describe the capabilities of Microsoft compliance solutions': '#8764B8'
     };
     const DOMAIN_WEIGHT = {
-      'Cloud Concepts':                  '25–30%',
-      'Azure Architecture & Services':   '35–40%',
-      'Azure Management & Governance':   '30–35%'
+      'Describe security, compliance, and identity concepts': '10–15%',
+      'Describe the capabilities of Microsoft Entra': '25–30%',
+      'Describe the capabilities of Microsoft security solutions': '35–40%',
+      'Describe the capabilities of Microsoft compliance solutions': '20–25%'
     };
     const HISTORY_KEY    = 'sc900-quiz-history';
     const SESSION_KEY    = 'sc900-quiz-session';
     const PASS_THRESHOLD = 0.70;
 
     const MODULE_URL = {
-      'Cloud Computing':         'https://learn.microsoft.com/en-us/training/modules/describe-cloud-compute/',
-      'Cloud Benefits':          'https://learn.microsoft.com/en-us/training/modules/describe-benefits-use-cloud-services/',
-      'Service Types':           'https://learn.microsoft.com/en-us/training/modules/describe-cloud-service-types/',
-      'Core Architecture':       'https://learn.microsoft.com/en-us/training/modules/describe-core-architectural-components-of-azure/',
-      'Compute & Networking':    'https://learn.microsoft.com/en-us/training/modules/describe-azure-compute-networking-services/',
-      'Storage':                 'https://learn.microsoft.com/en-us/training/modules/describe-azure-storage-services/',
-      'Identity & Security':     'https://learn.microsoft.com/en-us/training/modules/describe-azure-identity-access-security/',
-      'Cost Management':         'https://learn.microsoft.com/en-us/training/modules/describe-cost-management-azure/',
-      'Governance & Compliance': 'https://learn.microsoft.com/en-us/training/modules/describe-features-tools-azure-for-governance-compliance/',
-      'Resource Management':     'https://learn.microsoft.com/en-us/training/modules/describe-features-tools-manage-deploy-azure-resources/',
-      'Monitoring':              'https://learn.microsoft.com/en-us/training/modules/describe-monitoring-tools-azure/'
+      'Security Concepts': 'https://learn.microsoft.com/training/courses/sc-900t00',
+      'Compliance Concepts': 'https://learn.microsoft.com/training/courses/sc-900t00',
+      'Identity Concepts': 'https://learn.microsoft.com/training/courses/sc-900t00',
+      'Entra ID Fundamentals': 'https://learn.microsoft.com/training/courses/sc-900t00',
+      'Authentication & Access': 'https://learn.microsoft.com/training/courses/sc-900t00',
+      'Identity Governance': 'https://learn.microsoft.com/training/courses/sc-900t00',
+      'Defender XDR': 'https://learn.microsoft.com/training/courses/sc-900t00',
+      'Defender for Cloud': 'https://learn.microsoft.com/training/courses/sc-900t00',
+      'Microsoft Sentinel': 'https://learn.microsoft.com/training/courses/sc-900t00',
+      'Microsoft Purview': 'https://learn.microsoft.com/training/courses/sc-900t00',
+      'Data Lifecycle & Records': 'https://learn.microsoft.com/training/courses/sc-900t00',
+      'Risk & eDiscovery': 'https://learn.microsoft.com/training/courses/sc-900t00'
     };
 
     const DOMAIN_MODULES = {
-      'Cloud Concepts':                ['Cloud Computing', 'Cloud Benefits', 'Service Types'],
-      'Azure Architecture & Services': ['Core Architecture', 'Compute & Networking', 'Storage', 'Identity & Security'],
-      'Azure Management & Governance': ['Cost Management', 'Governance & Compliance', 'Resource Management', 'Monitoring']
+      'Describe security, compliance, and identity concepts': ['Security Concepts', 'Compliance Concepts', 'Identity Concepts'],
+      'Describe the capabilities of Microsoft Entra': ['Entra ID Fundamentals', 'Authentication & Access', 'Identity Governance'],
+      'Describe the capabilities of Microsoft security solutions': ['Defender XDR', 'Defender for Cloud', 'Microsoft Sentinel'],
+      'Describe the capabilities of Microsoft compliance solutions': ['Microsoft Purview', 'Data Lifecycle & Records', 'Risk & eDiscovery']
     };
-    const DOMAIN_ORDER = ['Cloud Concepts', 'Azure Architecture & Services', 'Azure Management & Governance'];
+    const DOMAIN_ORDER = [
+      'Describe security, compliance, and identity concepts',
+      'Describe the capabilities of Microsoft Entra',
+      'Describe the capabilities of Microsoft security solutions',
+      'Describe the capabilities of Microsoft compliance solutions'
+    ];
 
     // ── State ──────────────────────────────────────────────────────
     let shuffled        = [];
@@ -745,6 +769,7 @@
     let answered        = false;
     let markedIndices   = new Set();  // indices into shuffled[] marked for retry
     let mainQuizState   = null;       // saved state when a retry session is active
+    let currentMultiSelections = null;
 
     // All modules selected by default
     const ALL_MODULES = DOMAIN_ORDER.flatMap(d => DOMAIN_MODULES[d] || []);
@@ -941,6 +966,15 @@
       if (pct >= 50) return 'score-amber';
       return 'score-red';
     }
+    function answeredCount(list = userAnswers) {
+      return list.filter(v => v !== null && v !== undefined).length;
+    }
+    function firstUnansweredIndex(list, total) {
+      for (let i = 0; i < total; i++) {
+        if (!list[i]) return i;
+      }
+      return total;
+    }
 
     function showScreen(id) {
       document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
@@ -1018,10 +1052,10 @@
       const resumeSection = document.getElementById('resume-section');
       if (session) {
         resumeSection.classList.remove('hidden');
-        const answeredCount = session.userAnswers.length;
+        const answeredQuestions = answeredCount(session.userAnswers);
         const total    = session.shuffledIndices.length;
         document.getElementById('resume-info').textContent =
-          `Question ${session.currentIdx + 1} of ${total} · ${answeredCount} answered`;
+          `Question ${session.currentIdx + 1} of ${total} · ${answeredQuestions} answered`;
       } else {
         resumeSection.classList.add('hidden');
       }
@@ -1228,7 +1262,7 @@
       // Topic badge
       const badge = document.getElementById('topic-badge');
       badge.textContent = q.topic;
-      badge.className   = 'topic-badge ' + (DOMAIN_BADGE[q.topic] || 'badge-cc');
+      badge.className   = 'topic-badge ' + (DOMAIN_BADGE[q.topic] || 'badge-concepts');
 
       // Counter
       document.getElementById('progress-text').textContent =
@@ -1238,9 +1272,13 @@
       document.getElementById('question-text').textContent = q.question;
 
       // Options
-      document.getElementById('options-list').innerHTML = q.options
-        .map((opt, i) => `<button type="button" class="option-btn" onclick="selectAnswer(${i})">${opt}</button>`)
-        .join('');
+      if (q.questionType === 'triple_tf' && Array.isArray(q.statements) && q.statements.length === 3) {
+        renderMultiStatementOptions(q);
+      } else {
+        document.getElementById('options-list').innerHTML = q.options
+          .map((opt, i) => `<button type="button" class="option-btn" onclick="selectAnswer(${i})">${opt}</button>`)
+          .join('');
+      }
 
       // Previous button
       const prevBtn = document.getElementById('prev-btn');
@@ -1259,12 +1297,16 @@
       if (prevAnswer !== null) {
         // Already answered — restore the answer state for review
         answered = true;
-        const optBtns = document.querySelectorAll('.option-btn');
-        optBtns.forEach((btn, i) => {
-          btn.disabled = true;
-          if (i === q.answer) btn.classList.add('correct');
-          else if (prevAnswer.selectedIdx !== undefined && i === prevAnswer.selectedIdx) btn.classList.add('wrong');
-        });
+        if (q.questionType === 'triple_tf' && Array.isArray(q.statements) && Array.isArray(prevAnswer.selectedTf)) {
+          restoreMultiStatementAnswer(q, prevAnswer);
+        } else {
+          const optBtns = document.querySelectorAll('.option-btn');
+          optBtns.forEach((btn, i) => {
+            btn.disabled = true;
+            if (i === q.answer) btn.classList.add('correct');
+            else if (prevAnswer.selectedIdx !== undefined && i === prevAnswer.selectedIdx) btn.classList.add('wrong');
+          });
+        }
 
         const verdict = document.getElementById('verdict-text');
         verdict.textContent = prevAnswer.correct ? '✓ Correct!' : '✗ Incorrect';
@@ -1285,6 +1327,7 @@
       } else {
         // Unanswered question — clean slate
         answered = false;
+        currentMultiSelections = null;
         document.getElementById('explanation-box').classList.add('hidden');
         document.getElementById('btn-mark-retry').classList.add('hidden');
         nextBtn.classList.add('hidden');
@@ -1301,7 +1344,7 @@
         if (c) t.correct++;
       });
       const strip = document.getElementById('live-scores');
-      if (userAnswers.length === 0) { strip.classList.add('hidden'); return; }
+      if (answeredCount() === 0) { strip.classList.add('hidden'); return; }
       strip.classList.remove('hidden');
       [['learning', 'Foundation'], ['exam', 'Exam-style']].forEach(([key]) => {
         const d   = typeData[key];
@@ -1345,7 +1388,7 @@
       const bar = document.getElementById('focus-bar');
       if (!bar) return;
 
-      if (userAnswers.length < 3) {
+      if (answeredCount() < 3) {
         bar.classList.add('hidden');
         return;
       }
@@ -1386,28 +1429,41 @@
     }
 
     function confirmRestart() {
-      if (userAnswers.length > 0 && !confirm('Restart the quiz? Current progress will be lost.')) return;
+      if (answeredCount() > 0 && !confirm('Restart the quiz? Current progress will be lost.')) return;
       startQuiz();
     }
 
-    function selectAnswer(selectedIdx) {
-      if (answered) return;
-      answered = true;
+    function renderMultiStatementOptions(q) {
+      currentMultiSelections = [null, null, null];
+      const rows = q.statements.map((statement, i) => `
+        <div class="multi-statement-row">
+          <div class="multi-statement-text">${i + 1}. ${statement}</div>
+          <div class="multi-statement-actions">
+            <button type="button" class="option-btn tf-btn" data-statement="${i}" data-value="true" onclick="toggleMultiStatementChoice(${i}, true)">True</button>
+            <button type="button" class="option-btn tf-btn" data-statement="${i}" data-value="false" onclick="toggleMultiStatementChoice(${i}, false)">False</button>
+          </div>
+        </div>
+      `).join('');
+      document.getElementById('options-list').innerHTML = `
+        <div class="multi-statement-list">${rows}</div>
+        <button type="button" class="btn btn-primary multi-submit-btn" id="multi-submit-btn" onclick="submitMultiStatementAnswer()" disabled>Submit Answers</button>
+      `;
+    }
 
-      const q       = shuffled[currentIdx];
-      const correct = selectedIdx === q.answer;
-
-      userAnswers.push({ topic: q.topic, type: q.type || 'learning', module: q.module || '', correct, selectedIdx });
-      updateLiveScores();
-
-      // Style the buttons
-      document.querySelectorAll('.option-btn').forEach((btn, i) => {
-        btn.disabled = true;
-        if (i === q.answer)         btn.classList.add('correct');
-        else if (i === selectedIdx) btn.classList.add('wrong');
+    function toggleMultiStatementChoice(statementIdx, value) {
+      if (answered || !Array.isArray(currentMultiSelections)) return;
+      currentMultiSelections[statementIdx] = value;
+      document.querySelectorAll(`.tf-btn[data-statement="${statementIdx}"]`).forEach(btn => {
+        const btnVal = getTfBtnValue(btn);
+        btn.classList.toggle('selected', btnVal === value);
       });
+      const submitBtn = document.getElementById('multi-submit-btn');
+      if (submitBtn) {
+        submitBtn.disabled = currentMultiSelections.some(v => v === null);
+      }
+    }
 
-      // Show explanation
+    function showAnswerFeedback(correct, q) {
       const box     = document.getElementById('explanation-box');
       const verdict = document.getElementById('verdict-text');
       verdict.textContent = correct ? '✓ Correct!' : '✗ Incorrect';
@@ -1422,14 +1478,80 @@
         link.classList.add('hidden');
       }
       box.classList.remove('hidden');
-
-      // Show mark for retry button
       document.getElementById('btn-mark-retry').classList.remove('hidden');
       updateMarkButton();
       updateRetryButtonQuiz();
-
-      // Show next button (label already set in renderQuestion)
       document.getElementById('next-btn').classList.remove('hidden');
+    }
+    function parseStringToBoolean(value) {
+      return value === 'true';
+    }
+    function getTfBtnValue(btn) {
+      return parseStringToBoolean(btn.dataset.value);
+    }
+
+    function submitMultiStatementAnswer() {
+      if (answered) return;
+      const q = shuffled[currentIdx];
+      if (!q || q.questionType !== 'triple_tf' || !Array.isArray(q.answer)) return;
+      if (!Array.isArray(currentMultiSelections) || currentMultiSelections.some(v => v === null)) return;
+      answered = true;
+
+      const statementResults = currentMultiSelections.map((val, i) => val === q.answer[i]);
+      const correct = statementResults.every(Boolean);
+      userAnswers[currentIdx] = {
+        topic: q.topic,
+        type: q.type || 'learning',
+        module: q.module || '',
+        correct,
+        selectedTf: [...currentMultiSelections],
+        statementResults
+      };
+      updateLiveScores();
+
+      document.querySelectorAll('.tf-btn').forEach(btn => {
+        btn.disabled = true;
+        const si = Number(btn.dataset.statement);
+        const btnVal = getTfBtnValue(btn);
+        if (btnVal === q.answer[si]) btn.classList.add('correct');
+        else if (btnVal === currentMultiSelections[si]) btn.classList.add('wrong');
+      });
+      const submitBtn = document.getElementById('multi-submit-btn');
+      if (submitBtn) submitBtn.disabled = true;
+
+      showAnswerFeedback(correct, q);
+    }
+
+    function restoreMultiStatementAnswer(q, prevAnswer) {
+      document.querySelectorAll('.tf-btn').forEach(btn => {
+        btn.disabled = true;
+        const si = Number(btn.dataset.statement);
+        const btnVal = getTfBtnValue(btn);
+        if (btnVal === q.answer[si]) btn.classList.add('correct');
+        else if (Array.isArray(prevAnswer.selectedTf) && btnVal === prevAnswer.selectedTf[si]) btn.classList.add('wrong');
+      });
+      const submitBtn = document.getElementById('multi-submit-btn');
+      if (submitBtn) submitBtn.disabled = true;
+    }
+
+    function selectAnswer(selectedIdx) {
+      if (answered) return;
+      answered = true;
+
+      const q       = shuffled[currentIdx];
+      const correct = selectedIdx === q.answer;
+
+      userAnswers[currentIdx] = { topic: q.topic, type: q.type || 'learning', module: q.module || '', correct, selectedIdx };
+      updateLiveScores();
+
+      // Style the buttons
+      document.querySelectorAll('.option-btn').forEach((btn, i) => {
+        btn.disabled = true;
+        if (i === q.answer)         btn.classList.add('correct');
+        else if (i === selectedIdx) btn.classList.add('wrong');
+      });
+
+      showAnswerFeedback(correct, q);
     }
 
     function nextQuestion() {
@@ -1527,8 +1649,9 @@
     // ── Results Screen ─────────────────────────────────────────────
     function showResults() {
       clearSession();
-      const total   = userAnswers.length;
-      const correct = userAnswers.filter(a => a.correct).length;
+      const answeredEntries = userAnswers.filter(Boolean);
+      const total   = answeredEntries.length;
+      const correct = answeredEntries.filter(a => a.correct).length;
       const pct     = total > 0 ? correct / total : 0;
 
       saveRun(correct, total);
@@ -1552,7 +1675,7 @@
 
       // Learning vs Exam type breakdown
       const typeData = { learning: { correct: 0, total: 0 }, exam: { correct: 0, total: 0 } };
-      userAnswers.forEach(({ type, correct: c }) => {
+      answeredEntries.forEach(({ type, correct: c }) => {
         const t = typeData[type] || typeData.learning;
         t.total++;
         if (c) t.correct++;
@@ -1582,7 +1705,7 @@
 
       // Domain breakdown
       const domains = {};
-      userAnswers.forEach(({ topic, correct: c }) => {
+      answeredEntries.forEach(({ topic, correct: c }) => {
         if (!domains[topic]) domains[topic] = { correct: 0, total: 0 };
         domains[topic].total++;
         if (c) domains[topic].correct++;
@@ -1668,7 +1791,7 @@
 
       const badge = document.getElementById('fc-topic-badge');
       badge.textContent = q.topic;
-      badge.className   = 'topic-badge ' + (DOMAIN_BADGE[q.topic] || 'badge-cc');
+      badge.className   = 'topic-badge ' + (DOMAIN_BADGE[q.topic] || 'badge-concepts');
 
       document.getElementById('fc-question').textContent = q.question;
 
@@ -1863,7 +1986,7 @@
     function startRetryQuiz(questions) {
       if (questions.length === 0) return;
       // Save the current main quiz state so the user can return to it after retry
-      if (mainQuizState === null && userAnswers.length > 0) {
+      if (mainQuizState === null && answeredCount() > 0) {
         mainQuizState = {
           shuffled: [...shuffled],
           shuffledIndices: [...shuffledIndices],
@@ -1896,7 +2019,7 @@
     }
     function continueMainQuizLabel() {
       if (!mainQuizState) return '\u21A9 Continue Main Quiz';
-      const remaining = mainQuizState.shuffled.length - mainQuizState.userAnswers.length;
+      const remaining = mainQuizState.shuffled.length - answeredCount(mainQuizState.userAnswers);
       return `\u21A9 Continue Main Quiz${remaining > 0 ? ` (${remaining} left)` : ''}`;
     }
 
@@ -1918,7 +2041,7 @@
       userAnswers     = mainQuizState.userAnswers;
       markedIndices   = mainQuizState.markedIndices;
       // Resume at the first unanswered question; if all done, showResults handles it
-      currentIdx      = mainQuizState.userAnswers.length;
+      currentIdx      = firstUnansweredIndex(mainQuizState.userAnswers, mainQuizState.shuffled.length);
       mainQuizState   = null;
       answered        = false;
       clearSession();
@@ -1935,7 +2058,7 @@
       updateLiveScores();
       updateRetryButtonQuiz();
       updateContinueMainQuizButton();
-      if (userAnswers.length >= shuffled.length) {
+      if (answeredCount() >= shuffled.length) {
         showResults();
       } else {
         renderQuestion();
