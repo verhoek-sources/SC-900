@@ -1,18 +1,13 @@
 # SC-900 Knowledge Summary
 
-This repository currently contains an applicator scaffold copied from the AZ-900 implementation.
-
 ## Status
 
-- ✅ SC-900-branded applicator shell is in place
-- ⚠️ SC-900 curriculum content is not yet curated in this file
+- ✅ SC-900-branded application shell is in place
+- ✅ 90 SC-900 exam questions in `questions.js` covering all four exam domains
 
-## TODO
+## Exam domains covered
 
-Add SC-900-aligned study content focused on:
-
-- Security concepts and methodologies
-- Identity and access management concepts
-- Microsoft Entra capabilities
-- Microsoft security solutions
-- Microsoft compliance solutions
+- Security, compliance, and identity concepts (shared responsibility, Zero Trust, encryption, hashing, common threats, GRC)
+- Microsoft Entra capabilities (Entra ID, managed identities, hybrid identity, passwordless auth, RBAC, Conditional Access, ID Protection, External ID, PIM, access reviews)
+- Microsoft security solutions (Defender XDR, Defender for Cloud, Microsoft Sentinel, Azure DDoS Protection, Azure Firewall, NSGs, Azure Bastion, Azure Key Vault, Defender for Cloud Apps, Microsoft Intune)
+- Microsoft compliance solutions (Microsoft Purview, sensitivity labels, DLP, retention labels, records management, eDiscovery, insider risk, communication compliance, Purview Audit, information barriers, Compliance Manager, Service Trust Portal)
