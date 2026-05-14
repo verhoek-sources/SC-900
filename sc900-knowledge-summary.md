@@ -1,7 +1,9 @@
-# SC-900 Microsoft Security, Compliance, and Identity Fundamentals — Comprehensive Knowledge Summary
+# SC-900 Knowledge Summary Template (Derived from AZ-900 Source)
 
-> Source: Official MS Learn content, all 11 modules read in full.  
-> Purpose: Authoritative reference for writing nuanced, scenario-based exam questions.
+> Source: Imported from AZ-900 template content to mirror repository structure/specs.  
+> Purpose: Placeholder reference until SC-900-specific module content is curated.
+
+> Note: This file currently reflects AZ-900 curriculum topics and is intentionally kept as template content.
 
 ---
 
