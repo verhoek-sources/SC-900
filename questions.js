@@ -560,5 +560,73 @@ const QUESTIONS = [
     explanation: "Compliance Manager helps assess compliance posture and track remediation actions.",
     learnUrl: "https://learn.microsoft.com/training/courses/sc-900t00",
     pageUrl: "https://learn.microsoft.com/en-us/credentials/certifications/security-compliance-and-identity-fundamentals/"
+  },
+  {
+    id: 41,
+    type: "exam",
+    questionType: "triple_tf",
+    topic: "Describe security, compliance, and identity concepts",
+    module: "Security Concepts",
+    question: "For each statement about foundational security concepts, select True or False.",
+    statements: [
+      "Zero Trust assumes breach and requires explicit verification.",
+      "Least privilege means granting users broad access to avoid support tickets.",
+      "Defense in depth relies on multiple layers of protection."
+    ],
+    answer: [true, false, true],
+    explanation: "Zero Trust and defense in depth are core principles, while least privilege limits access rather than broadening it.",
+    learnUrl: "https://learn.microsoft.com/training/courses/sc-900t00",
+    pageUrl: "https://learn.microsoft.com/en-us/credentials/certifications/security-compliance-and-identity-fundamentals/"
+  },
+  {
+    id: 42,
+    type: "exam",
+    questionType: "triple_tf",
+    topic: "Describe the capabilities of Microsoft Entra",
+    module: "Authentication & Access",
+    question: "For each statement about Microsoft Entra access controls, select True or False.",
+    statements: [
+      "Conditional Access can enforce MFA based on sign-in risk or device state.",
+      "Self-service password reset helps reduce help desk tickets.",
+      "Privileged Identity Management is mainly used to configure data retention labels."
+    ],
+    answer: [true, true, false],
+    explanation: "Conditional Access and SSPR are core Entra capabilities; PIM governs privileged access rather than records retention.",
+    learnUrl: "https://learn.microsoft.com/training/courses/sc-900t00",
+    pageUrl: "https://learn.microsoft.com/en-us/credentials/certifications/security-compliance-and-identity-fundamentals/"
+  },
+  {
+    id: 43,
+    type: "exam",
+    questionType: "triple_tf",
+    topic: "Describe the capabilities of Microsoft security solutions",
+    module: "Microsoft Sentinel",
+    question: "For each statement about Microsoft security solutions, select True or False.",
+    statements: [
+      "Microsoft Sentinel is a cloud-native SIEM and SOAR solution.",
+      "Defender for Cloud helps with cloud security posture management.",
+      "Defender XDR is primarily a billing optimization product."
+    ],
+    answer: [true, true, false],
+    explanation: "Sentinel and Defender for Cloud are security operations/posture tools, while Defender XDR is for threat detection and response.",
+    learnUrl: "https://learn.microsoft.com/training/courses/sc-900t00",
+    pageUrl: "https://learn.microsoft.com/en-us/credentials/certifications/security-compliance-and-identity-fundamentals/"
+  },
+  {
+    id: 44,
+    type: "exam",
+    questionType: "triple_tf",
+    topic: "Describe the capabilities of Microsoft compliance solutions",
+    module: "Microsoft Purview",
+    question: "For each statement about Microsoft Purview compliance capabilities, select True or False.",
+    statements: [
+      "DLP policies can prevent sharing of sensitive information.",
+      "eDiscovery supports legal investigations and case workflows.",
+      "Retention labels are used to autoscale virtual machines."
+    ],
+    answer: [true, true, false],
+    explanation: "Purview DLP and eDiscovery are compliance solutions; retention labels govern data lifecycle, not compute scaling.",
+    learnUrl: "https://learn.microsoft.com/training/courses/sc-900t00",
+    pageUrl: "https://learn.microsoft.com/en-us/credentials/certifications/security-compliance-and-identity-fundamentals/"
   }
 ];

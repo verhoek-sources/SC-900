@@ -169,6 +169,18 @@
     .option-btn:disabled { cursor: default; }
     .option-btn.correct { border-color: var(--green); background: #F0FFF0; color: var(--green); font-weight: 600; }
     .option-btn.wrong   { border-color: var(--red);   background: #FFF0F0; color: var(--red); font-weight: 600; }
+    .option-btn.selected { border-color: var(--blue); background: #EBF4FF; font-weight: 600; }
+    .multi-statement-list { display: flex; flex-direction: column; gap: 12px; }
+    .multi-statement-row {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      background: #fff;
+    }
+    .multi-statement-text { margin-bottom: 8px; font-size: 0.92rem; line-height: 1.45; }
+    .multi-statement-actions { display: flex; gap: 8px; }
+    .tf-btn { margin-bottom: 0; flex: 1; text-align: center; }
+    .multi-submit-btn { margin-top: 12px; }
 
     /* ── Explanation ─────────────────────────── */
     .explanation {
@@ -757,6 +769,7 @@
     let answered        = false;
     let markedIndices   = new Set();  // indices into shuffled[] marked for retry
     let mainQuizState   = null;       // saved state when a retry session is active
+    let currentMultiSelections = null;
 
     // All modules selected by default
     const ALL_MODULES = DOMAIN_ORDER.flatMap(d => DOMAIN_MODULES[d] || []);
@@ -953,6 +966,15 @@
       if (pct >= 50) return 'score-amber';
       return 'score-red';
     }
+    function answeredCount(list = userAnswers) {
+      return list.filter(Boolean).length;
+    }
+    function firstUnansweredIndex(list, total) {
+      for (let i = 0; i < total; i++) {
+        if (!list[i]) return i;
+      }
+      return total;
+    }
 
     function showScreen(id) {
       document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
@@ -1030,10 +1052,10 @@
       const resumeSection = document.getElementById('resume-section');
       if (session) {
         resumeSection.classList.remove('hidden');
-        const answeredCount = session.userAnswers.length;
+        const answered = answeredCount(session.userAnswers);
         const total    = session.shuffledIndices.length;
         document.getElementById('resume-info').textContent =
-          `Question ${session.currentIdx + 1} of ${total} · ${answeredCount} answered`;
+          `Question ${session.currentIdx + 1} of ${total} · ${answered} answered`;
       } else {
         resumeSection.classList.add('hidden');
       }
@@ -1250,9 +1272,13 @@
       document.getElementById('question-text').textContent = q.question;
 
       // Options
-      document.getElementById('options-list').innerHTML = q.options
-        .map((opt, i) => `<button type="button" class="option-btn" onclick="selectAnswer(${i})">${opt}</button>`)
-        .join('');
+      if (q.questionType === 'triple_tf' && Array.isArray(q.statements) && q.statements.length === 3) {
+        renderMultiStatementOptions(q);
+      } else {
+        document.getElementById('options-list').innerHTML = q.options
+          .map((opt, i) => `<button type="button" class="option-btn" onclick="selectAnswer(${i})">${opt}</button>`)
+          .join('');
+      }
 
       // Previous button
       const prevBtn = document.getElementById('prev-btn');
@@ -1271,12 +1297,16 @@
       if (prevAnswer !== null) {
         // Already answered — restore the answer state for review
         answered = true;
-        const optBtns = document.querySelectorAll('.option-btn');
-        optBtns.forEach((btn, i) => {
-          btn.disabled = true;
-          if (i === q.answer) btn.classList.add('correct');
-          else if (prevAnswer.selectedIdx !== undefined && i === prevAnswer.selectedIdx) btn.classList.add('wrong');
-        });
+        if (q.questionType === 'triple_tf' && Array.isArray(q.statements) && Array.isArray(prevAnswer.selectedTf)) {
+          restoreMultiStatementAnswer(q, prevAnswer);
+        } else {
+          const optBtns = document.querySelectorAll('.option-btn');
+          optBtns.forEach((btn, i) => {
+            btn.disabled = true;
+            if (i === q.answer) btn.classList.add('correct');
+            else if (prevAnswer.selectedIdx !== undefined && i === prevAnswer.selectedIdx) btn.classList.add('wrong');
+          });
+        }
 
         const verdict = document.getElementById('verdict-text');
         verdict.textContent = prevAnswer.correct ? '✓ Correct!' : '✗ Incorrect';
@@ -1297,6 +1327,7 @@
       } else {
         // Unanswered question — clean slate
         answered = false;
+        currentMultiSelections = null;
         document.getElementById('explanation-box').classList.add('hidden');
         document.getElementById('btn-mark-retry').classList.add('hidden');
         nextBtn.classList.add('hidden');
@@ -1313,7 +1344,7 @@
         if (c) t.correct++;
       });
       const strip = document.getElementById('live-scores');
-      if (userAnswers.length === 0) { strip.classList.add('hidden'); return; }
+      if (answeredCount() === 0) { strip.classList.add('hidden'); return; }
       strip.classList.remove('hidden');
       [['learning', 'Foundation'], ['exam', 'Exam-style']].forEach(([key]) => {
         const d   = typeData[key];
@@ -1357,7 +1388,7 @@
       const bar = document.getElementById('focus-bar');
       if (!bar) return;
 
-      if (userAnswers.length < 3) {
+      if (answeredCount() < 3) {
         bar.classList.add('hidden');
         return;
       }
@@ -1398,28 +1429,41 @@
     }
 
     function confirmRestart() {
-      if (userAnswers.length > 0 && !confirm('Restart the quiz? Current progress will be lost.')) return;
+      if (answeredCount() > 0 && !confirm('Restart the quiz? Current progress will be lost.')) return;
       startQuiz();
     }
 
-    function selectAnswer(selectedIdx) {
-      if (answered) return;
-      answered = true;
+    function renderMultiStatementOptions(q) {
+      currentMultiSelections = [null, null, null];
+      const rows = q.statements.map((statement, i) => `
+        <div class="multi-statement-row">
+          <div class="multi-statement-text">${i + 1}. ${statement}</div>
+          <div class="multi-statement-actions">
+            <button type="button" class="option-btn tf-btn" data-statement="${i}" data-value="true" onclick="toggleMultiStatementChoice(${i}, true)">True</button>
+            <button type="button" class="option-btn tf-btn" data-statement="${i}" data-value="false" onclick="toggleMultiStatementChoice(${i}, false)">False</button>
+          </div>
+        </div>
+      `).join('');
+      document.getElementById('options-list').innerHTML = `
+        <div class="multi-statement-list">${rows}</div>
+        <button type="button" class="btn btn-primary multi-submit-btn" id="multi-submit-btn" onclick="submitMultiStatementAnswer()" disabled>Submit Answers</button>
+      `;
+    }
 
-      const q       = shuffled[currentIdx];
-      const correct = selectedIdx === q.answer;
-
-      userAnswers.push({ topic: q.topic, type: q.type || 'learning', module: q.module || '', correct, selectedIdx });
-      updateLiveScores();
-
-      // Style the buttons
-      document.querySelectorAll('.option-btn').forEach((btn, i) => {
-        btn.disabled = true;
-        if (i === q.answer)         btn.classList.add('correct');
-        else if (i === selectedIdx) btn.classList.add('wrong');
+    function toggleMultiStatementChoice(statementIdx, value) {
+      if (answered || !Array.isArray(currentMultiSelections)) return;
+      currentMultiSelections[statementIdx] = value;
+      document.querySelectorAll(`.tf-btn[data-statement="${statementIdx}"]`).forEach(btn => {
+        const btnVal = btn.dataset.value === 'true';
+        btn.classList.toggle('selected', btnVal === value);
       });
+      const submitBtn = document.getElementById('multi-submit-btn');
+      if (submitBtn) {
+        submitBtn.disabled = currentMultiSelections.some(v => v === null);
+      }
+    }
 
-      // Show explanation
+    function showAnswerFeedback(correct, q) {
       const box     = document.getElementById('explanation-box');
       const verdict = document.getElementById('verdict-text');
       verdict.textContent = correct ? '✓ Correct!' : '✗ Incorrect';
@@ -1434,14 +1478,74 @@
         link.classList.add('hidden');
       }
       box.classList.remove('hidden');
-
-      // Show mark for retry button
       document.getElementById('btn-mark-retry').classList.remove('hidden');
       updateMarkButton();
       updateRetryButtonQuiz();
-
-      // Show next button (label already set in renderQuestion)
       document.getElementById('next-btn').classList.remove('hidden');
+    }
+
+    function submitMultiStatementAnswer() {
+      if (answered) return;
+      const q = shuffled[currentIdx];
+      if (!q || q.questionType !== 'triple_tf' || !Array.isArray(q.answer)) return;
+      if (!Array.isArray(currentMultiSelections) || currentMultiSelections.some(v => v === null)) return;
+      answered = true;
+
+      const statementResults = currentMultiSelections.map((val, i) => val === q.answer[i]);
+      const correct = statementResults.every(Boolean);
+      userAnswers[currentIdx] = {
+        topic: q.topic,
+        type: q.type || 'learning',
+        module: q.module || '',
+        correct,
+        selectedTf: [...currentMultiSelections],
+        statementResults
+      };
+      updateLiveScores();
+
+      document.querySelectorAll('.tf-btn').forEach(btn => {
+        btn.disabled = true;
+        const si = Number(btn.dataset.statement);
+        const btnVal = btn.dataset.value === 'true';
+        if (btnVal === q.answer[si]) btn.classList.add('correct');
+        else if (btnVal === currentMultiSelections[si]) btn.classList.add('wrong');
+      });
+      const submitBtn = document.getElementById('multi-submit-btn');
+      if (submitBtn) submitBtn.disabled = true;
+
+      showAnswerFeedback(correct, q);
+    }
+
+    function restoreMultiStatementAnswer(q, prevAnswer) {
+      document.querySelectorAll('.tf-btn').forEach(btn => {
+        btn.disabled = true;
+        const si = Number(btn.dataset.statement);
+        const btnVal = btn.dataset.value === 'true';
+        if (btnVal === q.answer[si]) btn.classList.add('correct');
+        else if (Array.isArray(prevAnswer.selectedTf) && btnVal === prevAnswer.selectedTf[si]) btn.classList.add('wrong');
+      });
+      const submitBtn = document.getElementById('multi-submit-btn');
+      if (submitBtn) submitBtn.disabled = true;
+    }
+
+    function selectAnswer(selectedIdx) {
+      if (answered) return;
+      answered = true;
+
+      const q       = shuffled[currentIdx];
+      const correct = selectedIdx === q.answer;
+
+      userAnswers[currentIdx] = { topic: q.topic, type: q.type || 'learning', module: q.module || '', correct, selectedIdx };
+      updateLiveScores();
+
+      // Style the buttons
+      document.querySelectorAll('.option-btn').forEach((btn, i) => {
+        btn.disabled = true;
+        if (i === q.answer)         btn.classList.add('correct');
+        else if (i === selectedIdx) btn.classList.add('wrong');
+      });
+
+      showAnswerFeedback(correct, q);
     }
 
     function nextQuestion() {
@@ -1539,8 +1643,9 @@
     // ── Results Screen ─────────────────────────────────────────────
     function showResults() {
       clearSession();
-      const total   = userAnswers.length;
-      const correct = userAnswers.filter(a => a.correct).length;
+      const answeredEntries = userAnswers.filter(Boolean);
+      const total   = answeredEntries.length;
+      const correct = answeredEntries.filter(a => a.correct).length;
       const pct     = total > 0 ? correct / total : 0;
 
       saveRun(correct, total);
@@ -1564,7 +1669,7 @@
 
       // Learning vs Exam type breakdown
       const typeData = { learning: { correct: 0, total: 0 }, exam: { correct: 0, total: 0 } };
-      userAnswers.forEach(({ type, correct: c }) => {
+      answeredEntries.forEach(({ type, correct: c }) => {
         const t = typeData[type] || typeData.learning;
         t.total++;
         if (c) t.correct++;
@@ -1594,7 +1699,7 @@
 
       // Domain breakdown
       const domains = {};
-      userAnswers.forEach(({ topic, correct: c }) => {
+      answeredEntries.forEach(({ topic, correct: c }) => {
         if (!domains[topic]) domains[topic] = { correct: 0, total: 0 };
         domains[topic].total++;
         if (c) domains[topic].correct++;
@@ -1875,7 +1980,7 @@
     function startRetryQuiz(questions) {
       if (questions.length === 0) return;
       // Save the current main quiz state so the user can return to it after retry
-      if (mainQuizState === null && userAnswers.length > 0) {
+      if (mainQuizState === null && answeredCount() > 0) {
         mainQuizState = {
           shuffled: [...shuffled],
           shuffledIndices: [...shuffledIndices],
@@ -1908,7 +2013,7 @@
     }
     function continueMainQuizLabel() {
       if (!mainQuizState) return '\u21A9 Continue Main Quiz';
-      const remaining = mainQuizState.shuffled.length - mainQuizState.userAnswers.length;
+      const remaining = mainQuizState.shuffled.length - answeredCount(mainQuizState.userAnswers);
       return `\u21A9 Continue Main Quiz${remaining > 0 ? ` (${remaining} left)` : ''}`;
     }
 
@@ -1930,7 +2035,7 @@
       userAnswers     = mainQuizState.userAnswers;
       markedIndices   = mainQuizState.markedIndices;
       // Resume at the first unanswered question; if all done, showResults handles it
-      currentIdx      = mainQuizState.userAnswers.length;
+      currentIdx      = firstUnansweredIndex(mainQuizState.userAnswers, mainQuizState.shuffled.length);
       mainQuizState   = null;
       answered        = false;
       clearSession();
@@ -1947,7 +2052,7 @@
       updateLiveScores();
       updateRetryButtonQuiz();
       updateContinueMainQuizButton();
-      if (userAnswers.length >= shuffled.length) {
+      if (answeredCount() >= shuffled.length) {
         showResults();
       } else {
         renderQuestion();
