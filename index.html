@@ -1326,7 +1326,9 @@
       } else {
         // Unanswered question — clean slate
         answered = false;
-        currentMultiSelections = null;
+        // Only reset currentMultiSelections for non-triple_tf questions;
+        // for triple_tf it was already initialised by renderMultiStatementOptions above.
+        if (q.questionType !== 'triple_tf') currentMultiSelections = null;
         document.getElementById('explanation-box').classList.add('hidden');
         document.getElementById('btn-mark-retry').classList.add('hidden');
         nextBtn.classList.add('hidden');
