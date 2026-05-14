@@ -1967,8 +1967,61 @@
       renderFlashCard();
     }
 
+    function validateQuestionBank() {
+      if (!Array.isArray(QUESTIONS) || QUESTIONS.length === 0) {
+        throw new Error('Question bank is missing or empty.');
+      }
+      const ids = new Set();
+      const required = ['id', 'type', 'topic', 'module', 'question', 'options', 'answer', 'explanation', 'learnUrl', 'pageUrl'];
+      QUESTIONS.forEach((q, idx) => {
+        required.forEach(key => {
+          if (q[key] === undefined || q[key] === null || q[key] === '') {
+            throw new Error(`Question ${idx + 1} is missing required field: ${key}`);
+          }
+        });
+        if (!Number.isInteger(q.id) || ids.has(q.id)) {
+          throw new Error(`Question ${idx + 1} has invalid or duplicate id.`);
+        }
+        ids.add(q.id);
+        if (!Array.isArray(q.options) || q.options.length !== 4) {
+          throw new Error(`Question ${q.id} must contain exactly 4 options.`);
+        }
+        if (!Number.isInteger(q.answer) || q.answer < 0 || q.answer >= q.options.length) {
+          throw new Error(`Question ${q.id} has an invalid answer index.`);
+        }
+        ['learnUrl', 'pageUrl'].forEach(key => {
+          try {
+            const parsed = new URL(q[key]);
+            if (parsed.protocol !== 'https:') throw new Error('invalid protocol');
+          } catch (_) {
+            throw new Error(`Question ${q.id} has an invalid URL in ${key}.`);
+          }
+        });
+      });
+
+      const counts = {};
+      QUESTIONS.forEach(q => { counts[q.topic] = (counts[q.topic] || 0) + 1; });
+      DOMAIN_ORDER.forEach(domain => {
+        const range = DOMAIN_WEIGHT[domain];
+        const m = String(range || '').match(/(\d+)\D+(\d+)/);
+        if (!m) return;
+        const min = Number(m[1]);
+        const max = Number(m[2]);
+        const pct = (counts[domain] || 0) / QUESTIONS.length * 100;
+        if (pct < min || pct > max) {
+          throw new Error(`Question distribution for '${domain}' is ${pct.toFixed(1)}%, expected ${range}.`);
+        }
+      });
+    }
+
     // ── Init ───────────────────────────────────────────────────────
     window.addEventListener('DOMContentLoaded', () => {
+      try {
+        validateQuestionBank();
+      } catch (err) {
+        console.error('Question bank validation failed:', err);
+        alert('Question bank validation failed. Please refresh after updating questions.js.');
+      }
       initHome();
       showScreen('screen-home');
     });
