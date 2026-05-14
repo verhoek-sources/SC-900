@@ -763,7 +763,7 @@ const QUESTIONS = [
       "All user passwords are immediately changed"
     ],
     answer: 2,
-    explanation: "Ransomware encrypts victim data and demands payment for the decryption key. The primary harm is loss of access to critical data. Organisations without good backups face severe disruption.",
+    explanation: "Ransomware encrypts victim data and demands payment for the decryption key. The primary harm is loss of access to critical data. Organizations without good backups face severe disruption.",
     learnUrl: "https://learn.microsoft.com/training/courses/sc-900t00",
     pageUrl: "https://learn.microsoft.com/en-us/credentials/certifications/security-compliance-and-identity-fundamentals/"
   },
@@ -935,7 +935,7 @@ const QUESTIONS = [
       "Hybrid identity – on-premises AD synchronisation"
     ],
     answer: 1,
-    explanation: "Entra External ID B2B lets partners and guests use their own organisational credentials (or Microsoft/social accounts) to access your resources. B2C is for consumer-facing applications; managed identities are for app/service authentication.",
+    explanation: "Entra External ID B2B lets partners and guests use their own organizational credentials (or Microsoft/social accounts) to access your resources. B2C is for consumer-facing applications; managed identities are for app/service authentication.",
     learnUrl: "https://learn.microsoft.com/training/courses/sc-900t00",
     pageUrl: "https://learn.microsoft.com/en-us/credentials/certifications/security-compliance-and-identity-fundamentals/"
   },
@@ -1065,7 +1065,7 @@ const QUESTIONS = [
     type: "learning",
     topic: "Describe the capabilities of Microsoft security solutions",
     module: "Defender XDR",
-    question: "What role does Microsoft Defender for Cloud Apps play in an organisation's security architecture?",
+    question: "What role does Microsoft Defender for Cloud Apps play in an organization's security architecture?",
     options: [
       "It manages on-premises firewall rules",
       "It acts as a Cloud Access Security Broker (CASB) to provide visibility and control over cloud app usage and data",
@@ -1090,7 +1090,7 @@ const QUESTIONS = [
       "Managing Entra ID external guest access policies"
     ],
     answer: 1,
-    explanation: "Microsoft Intune enables organisations to manage and secure devices (Windows, macOS, iOS, Android) and apps through the cloud. It enforces compliance policies, controls app access, and integrates with Conditional Access to ensure only compliant devices can reach corporate resources.",
+    explanation: "Microsoft Intune enables organizations to manage and secure devices (Windows, macOS, iOS, Android) and apps through the cloud. It enforces compliance policies, controls app access, and integrates with Conditional Access to ensure only compliant devices can reach corporate resources.",
     learnUrl: "https://learn.microsoft.com/training/courses/sc-900t00",
     pageUrl: "https://learn.microsoft.com/en-us/credentials/certifications/security-compliance-and-identity-fundamentals/"
   },
@@ -1141,7 +1141,7 @@ const QUESTIONS = [
       "Azure Bastion"
     ],
     answer: 1,
-    explanation: "Defender for Cloud Apps (CASB) discovers cloud app usage across the organisation, categorises apps as sanctioned or unsanctioned, and can block or monitor access to shadow IT applications to prevent data leakage.",
+    explanation: "Defender for Cloud Apps (CASB) discovers cloud app usage across the organization, categorizes apps as sanctioned or unsanctioned, and can block or monitor access to shadow IT applications to prevent data leakage.",
     learnUrl: "https://learn.microsoft.com/training/courses/sc-900t00",
     pageUrl: "https://learn.microsoft.com/en-us/credentials/certifications/security-compliance-and-identity-fundamentals/"
   },
@@ -1167,7 +1167,7 @@ const QUESTIONS = [
     type: "exam",
     topic: "Describe the capabilities of Microsoft security solutions",
     module: "Azure Network Security",
-    question: "An organisation hosting a public-facing web app on Azure has experienced volumetric DDoS attacks. Which service should they enable to protect against future attacks?",
+    question: "An organization hosting a public-facing web app on Azure has experienced volumetric DDoS attacks. Which service should they enable to protect against future attacks?",
     options: [
       "Azure Firewall",
       "Network Security Group",
@@ -1205,7 +1205,7 @@ const QUESTIONS = [
     question: "For each statement about Microsoft endpoint and cloud app security, select True or False.",
     statements: [
       "Microsoft Intune is a cloud-based service for managing and securing devices and apps.",
-      "Defender for Cloud Apps can discover unsanctioned cloud applications used in an organisation (shadow IT).",
+      "Defender for Cloud Apps can discover unsanctioned cloud applications used in an organization (shadow IT).",
       "Defender for Endpoint is designed specifically to protect email from phishing attacks."
     ],
     answer: [true, true, false],
@@ -1228,7 +1228,7 @@ const QUESTIONS = [
       "A portal for configuring Purview DLP policies"
     ],
     answer: 1,
-    explanation: "The Service Trust Portal (STP) provides customers with access to audit reports (SOC, ISO, FedRAMP), compliance guides, whitepapers, and pen test results for Microsoft cloud services, helping organisations assess their compliance posture.",
+    explanation: "The Service Trust Portal (STP) provides customers with access to audit reports (SOC, ISO, FedRAMP), compliance guides, whitepapers, and pen test results for Microsoft cloud services, helping organizations assess their compliance posture.",
     learnUrl: "https://learn.microsoft.com/training/courses/sc-900t00",
     pageUrl: "https://learn.microsoft.com/en-us/credentials/certifications/security-compliance-and-identity-fundamentals/"
   },
@@ -1237,7 +1237,7 @@ const QUESTIONS = [
     type: "learning",
     topic: "Describe the capabilities of Microsoft compliance solutions",
     module: "Microsoft Purview",
-    question: "What does Microsoft Purview Communication Compliance help organisations achieve?",
+    question: "What does Microsoft Purview Communication Compliance help organizations achieve?",
     options: [
       "Blocking spam email from reaching users' inboxes",
       "Detecting potentially inappropriate or policy-violating content in communications such as Teams and email",
@@ -1296,7 +1296,7 @@ const QUESTIONS = [
       "Configuring Conditional Access policies"
     ],
     answer: 1,
-    explanation: "Compliance Manager provides a compliance score, pre-built regulatory assessments (GDPR, ISO 27001, NIST, etc.), and a tracking tool for improvement actions, helping organisations understand and manage their compliance obligations.",
+    explanation: "Compliance Manager provides a compliance score, pre-built regulatory assessments (GDPR, ISO 27001, NIST, etc.), and a tracking tool for improvement actions, helping organizations understand and manage their compliance obligations.",
     learnUrl: "https://learn.microsoft.com/training/courses/sc-900t00",
     pageUrl: "https://learn.microsoft.com/en-us/credentials/certifications/security-compliance-and-identity-fundamentals/"
   },
@@ -1330,7 +1330,7 @@ const QUESTIONS = [
       "Microsoft Entra admin centre"
     ],
     answer: 2,
-    explanation: "The Service Trust Portal hosts independently produced audit reports (SOC, ISO, FedRAMP, etc.), compliance guides, and other trust documentation for Microsoft cloud services. Compliance Manager tracks the organisation's own compliance posture.",
+    explanation: "The Service Trust Portal hosts independently produced audit reports (SOC, ISO, FedRAMP, etc.), compliance guides, and other trust documentation for Microsoft cloud services. Compliance Manager tracks the organization's own compliance posture.",
     learnUrl: "https://learn.microsoft.com/training/courses/sc-900t00",
     pageUrl: "https://learn.microsoft.com/en-us/credentials/certifications/security-compliance-and-identity-fundamentals/"
   },
@@ -1378,7 +1378,7 @@ const QUESTIONS = [
     statements: [
       "The Microsoft Service Trust Portal provides access to independent audit reports such as SOC and ISO certifications for Microsoft cloud services.",
       "Communication Compliance in Purview can detect potentially inappropriate messages in Teams and email.",
-      "Information barriers are used to encrypt email attachments before they leave the organisation."
+      "Information barriers are used to encrypt email attachments before they leave the organization."
     ],
     answer: [true, true, false],
     explanation: "The STP hosts audit reports; Communication Compliance detects policy-violating content in communications. Information barriers restrict communication between defined groups – encryption of attachments is the role of sensitivity labels with encryption applied.",
