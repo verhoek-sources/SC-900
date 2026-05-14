@@ -1,4 +1,4 @@
-# AZ-900 Quiz App — Design Spec
+# SC-900 Quiz App — Design Spec
 
 **Date:** 2026-04-01  
 **Status:** Approved
@@ -7,13 +7,13 @@
 
 ## Overview
 
-A portable, offline-capable quiz app to help users with some cloud familiarity (but new to Azure) study for and pass the AZ-900 exam. Runs entirely in the browser with no server, no install, and no internet connection required. Can be copied to a zip drive and opened on Windows or Mac.
+A portable, offline-capable quiz app to help users with some cloud familiarity (but new to Azure) study for and pass the SC-900 exam. Runs entirely in the browser with no server, no install, and no internet connection required. Can be copied to a zip drive and opened on Windows or Mac.
 
 ---
 
 ## Goals
 
-- Practice AZ-900 exam questions with immediate right/wrong feedback
+- Practice SC-900 exam questions with immediate right/wrong feedback
 - Understand *why* answers are correct via explanations
 - Track score history over multiple sessions to measure improvement
 - Know which exam domains need more work (weighted by official exam percentages)
@@ -23,7 +23,7 @@ A portable, offline-capable quiz app to help users with some cloud familiarity (
 ## Files
 
 ```
-az900-quiz/
+sc900-quiz/
 ├── index.html       ← app shell, all styles and logic
 └── questions.js     ← question bank (global QUESTIONS array)
 ```
@@ -39,7 +39,7 @@ Each question is an object in a global `QUESTIONS` array:
 ```js
 {
   id: 1,
-  topic: "Cloud Concepts",        // one of three AZ-900 domains
+  topic: "Cloud Concepts",        // one of three SC-900 domains
   question: "What is...",
   options: ["A", "B", "C", "D"],
   answer: 1,                       // zero-based index into options[]
@@ -91,7 +91,7 @@ Questions are shuffled on each run.
 
 ## Score History
 
-Stored in `localStorage` using a fixed key (`az900-quiz-history`). Persists across browser sessions on the same machine. Stores last 5 results: `{ date, score, total, percent }`.
+Stored in `localStorage` using a fixed key (`sc900-quiz-history`). Persists across browser sessions on the same machine. Stores last 5 results: `{ date, score, total, percent }`.
 
 ---
 
@@ -111,5 +111,5 @@ Stored in `localStorage` using a fixed key (`az900-quiz-history`). Persists acro
 
 - Timer / timed exam mode
 - Question import (JSON/CSV upload)
-- Multiple quiz sets or categories beyond the three AZ-900 domains
+- Multiple quiz sets or categories beyond the three SC-900 domains
 - Backend, database, or any server component

@@ -1,7 +1,7 @@
 {
-  "name": "AZ-900",
-  "short_name": "AZ-900",
-  "description": "AZ-900 Azure Fundamentals Quiz",
+  "name": "SC-900",
+  "short_name": "SC-900",
+  "description": "SC-900 Security, Compliance, and Identity Fundamentals Quiz",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#F3F4F6",

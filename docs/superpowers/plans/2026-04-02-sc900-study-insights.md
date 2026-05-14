@@ -1,4 +1,4 @@
-# AZ-900 Study Insights Implementation Plan
+# SC-900 Study Insights Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
@@ -16,15 +16,15 @@
 
 | File | Changes |
 |---|---|
-| `C:/Code/Boskalis/temp/az900/questions.js` | Add `pageUrl` field to all 158 questions |
-| `C:/Code/Boskalis/temp/az900/index.html` | CSS, HTML, and JS changes (Tasks 1–6) |
+| `C:/Code/Boskalis/temp/sc900/questions.js` | Add `pageUrl` field to all 158 questions |
+| `C:/Code/Boskalis/temp/sc900/index.html` | CSS, HTML, and JS changes (Tasks 1–6) |
 
 ---
 
 ## Task 1: Add CSS for focus bar and score-color classes
 
 **Files:**
-- Modify: `C:/Code/Boskalis/temp/az900/index.html:296`
+- Modify: `C:/Code/Boskalis/temp/sc900/index.html:296`
 
 The current last CSS rule is `.module-pct { ... }` ending around line 296. Insert the following new CSS rules immediately after that closing `}`, before the closing `</style>` tag.
 
@@ -104,7 +104,7 @@ Open `index.html` in a browser. Open DevTools → Elements → verify the new CS
 ## Task 2: Add HTML — focus-bar div and study-these card
 
 **Files:**
-- Modify: `C:/Code/Boskalis/temp/az900/index.html` (quiz screen + results screen)
+- Modify: `C:/Code/Boskalis/temp/sc900/index.html` (quiz screen + results screen)
 
 Two HTML additions: a `#focus-bar` div on the quiz screen, and a `#study-these` card on the results screen.
 
@@ -192,7 +192,7 @@ Open in browser. The focus-bar and study-these card should not be visible (both 
 ## Task 3: Update explanation link to use pageUrl
 
 **Files:**
-- Modify: `C:/Code/Boskalis/temp/az900/index.html` — `selectAnswer()` function (around line 723)
+- Modify: `C:/Code/Boskalis/temp/sc900/index.html` — `selectAnswer()` function (around line 723)
 
 The explanation "Learn more" link currently uses only `q.learnUrl`. Change it to prefer `q.pageUrl` when available.
 
@@ -243,7 +243,7 @@ Start quiz, answer a question. The "Learn more on Microsoft Learn ↗" link stil
 ## Task 4: Add scoreClass() helper and color-code module rows
 
 **Files:**
-- Modify: `C:/Code/Boskalis/temp/az900/index.html` — `modId()` area, `buildModuleRow()`, `updateLiveScores()`, `renderModuleBreakdown()`
+- Modify: `C:/Code/Boskalis/temp/sc900/index.html` — `modId()` area, `buildModuleRow()`, `updateLiveScores()`, `renderModuleBreakdown()`
 
 Three changes: (1) add `scoreClass()` helper, (2) update `buildModuleRow` initial bar color, (3) add score classes in `updateLiveScores()`, (4) add score classes in `renderModuleBreakdown()`.
 
@@ -350,7 +350,7 @@ Start quiz, answer several questions. Open the module panel — answered modules
 ## Task 5: Implement updateFocusBar() and wire it up
 
 **Files:**
-- Modify: `C:/Code/Boskalis/temp/az900/index.html` — after `updateLiveScores()`, and in `startQuiz()`
+- Modify: `C:/Code/Boskalis/temp/sc900/index.html` — after `updateLiveScores()`, and in `startQuiz()`
 
 ### Step 1: Add updateFocusBar() function
 
@@ -462,7 +462,7 @@ Start quiz. Answer 2 questions — focus bar should not appear. Answer a 3rd que
 ## Task 6: Implement renderStudyThese() and call from showResults()
 
 **Files:**
-- Modify: `C:/Code/Boskalis/temp/az900/index.html` — after `renderModuleBreakdown()`, and in `showResults()`
+- Modify: `C:/Code/Boskalis/temp/sc900/index.html` — after `renderModuleBreakdown()`, and in `showResults()`
 
 ### Step 1: Add renderStudyThese() function
 
@@ -570,14 +570,14 @@ Complete a quiz answering some questions wrong. On the results screen, verify:
 ## Task 7: Add pageUrl to all 158 questions in questions.js
 
 **Files:**
-- Create: `C:/Code/Boskalis/temp/az900/add-page-urls.js` (temporary transform script)
-- Modify: `C:/Code/Boskalis/temp/az900/questions.js`
+- Create: `C:/Code/Boskalis/temp/sc900/add-page-urls.js` (temporary transform script)
+- Modify: `C:/Code/Boskalis/temp/sc900/questions.js`
 
 The script reads `questions.js`, finds each question by its `id:` field, and inserts a `pageUrl:` line after the `learnUrl:` line for that question.
 
 ### Step 1: Create the transform script
 
-- [ ] Create `C:/Code/Boskalis/temp/az900/add-page-urls.js` with this content:
+- [ ] Create `C:/Code/Boskalis/temp/sc900/add-page-urls.js` with this content:
 
 ```js
 const fs = require('fs');
@@ -787,7 +787,7 @@ console.log(`Modified ${modified} questions. Total pageUrl fields in file: ${pag
 - [ ] Run in terminal:
 
 ```bash
-C:/Users/coek/AppData/Local/nvm/v24.14.1/node.exe C:/Code/Boskalis/temp/az900/add-page-urls.js
+C:/Users/coek/AppData/Local/nvm/v24.14.1/node.exe C:/Code/Boskalis/temp/sc900/add-page-urls.js
 ```
 
 Expected output:
@@ -799,7 +799,7 @@ If the count is less than 158, some questions were not matched. Check the script
 
 ### Step 3: Verify questions.js
 
-- [ ] Open `C:/Code/Boskalis/temp/az900/questions.js` and spot-check a few questions:
+- [ ] Open `C:/Code/Boskalis/temp/sc900/questions.js` and spot-check a few questions:
 
 Question id 1 should now have:
 ```js
@@ -823,7 +823,7 @@ Question id 82 should have:
 - [ ] Delete the temporary script:
 
 ```bash
-del C:/Code/Boskalis/temp/az900/add-page-urls.js
+del C:/Code/Boskalis/temp/sc900/add-page-urls.js
 ```
 
 ---
@@ -831,18 +831,18 @@ del C:/Code/Boskalis/temp/az900/add-page-urls.js
 ## Task 8: Re-zip and deploy
 
 **Files:**
-- Create: `C:/Code/Boskalis/temp/az900/az900-quiz.zip`
+- Create: `C:/Code/Boskalis/temp/sc900/sc900-quiz.zip`
 
 - [ ] **Step 1: Create updated zip**
 
 Run in terminal (PowerShell):
 ```powershell
-Compress-Archive -Path C:/Code/Boskalis/temp/az900/index.html, C:/Code/Boskalis/temp/az900/questions.js -DestinationPath C:/Code/Boskalis/temp/az900/az900-quiz.zip -Force
+Compress-Archive -Path C:/Code/Boskalis/temp/sc900/index.html, C:/Code/Boskalis/temp/sc900/questions.js -DestinationPath C:/Code/Boskalis/temp/sc900/sc900-quiz.zip -Force
 ```
 
 - [ ] **Step 2: Upload to tiiny.host**
 
-Drag-and-drop `C:/Code/Boskalis/temp/az900/az900-quiz.zip` onto the tiiny.host upload area (same process as before: tiiny.host → drag zip → upload).
+Drag-and-drop `C:/Code/Boskalis/temp/sc900/sc900-quiz.zip` onto the tiiny.host upload area (same process as before: tiiny.host → drag zip → upload).
 
 - [ ] **Step 3: Smoke-test the live URL**
 

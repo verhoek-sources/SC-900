@@ -1,4 +1,4 @@
-# AZ-900 Flash Cards — Design Spec
+# SC-900 Flash Cards — Design Spec
 
 **Date:** 2026-05-02  
 **Status:** Approved
@@ -7,7 +7,7 @@
 
 ## Overview
 
-Add a **Flash Cards** study mode to the AZ-900 quiz app. Instead of answering multiple-choice questions, the user sees only the question text, then taps "Reveal Answer" to read the explanation. The user then self-marks each card as **Got it** or **Try again**, working through all questions. A results screen shows mastery percentage and lists every card that needs more practice, grouped by module with MS Learn links.
+Add a **Flash Cards** study mode to the SC-900 quiz app. Instead of answering multiple-choice questions, the user sees only the question text, then taps "Reveal Answer" to read the explanation. The user then self-marks each card as **Got it** or **Try again**, working through all questions. A results screen shows mastery percentage and lists every card that needs more practice, grouped by module with MS Learn links.
 
 ---
 

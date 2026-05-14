@@ -1,4 +1,4 @@
-# AZ-900 Module Breakdown Implementation Plan
+# SC-900 Module Breakdown Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
@@ -39,12 +39,12 @@ Key anchor points for edits:
 ## Task 1: Add `module` field to all 158 questions
 
 **Files:**
-- Create: `C:/Code/Boskalis/temp/az900/add-modules.js` (temp script)
-- Modify: `C:/Code/Boskalis/temp/az900/questions.js`
+- Create: `C:/Code/Boskalis/temp/sc900/add-modules.js` (temp script)
+- Modify: `C:/Code/Boskalis/temp/sc900/questions.js`
 
 - [ ] **Step 1: Create the transform script**
 
-Create `C:/Code/Boskalis/temp/az900/add-modules.js` with this exact content:
+Create `C:/Code/Boskalis/temp/sc900/add-modules.js` with this exact content:
 
 ```js
 const fs = require('fs');
@@ -99,7 +99,7 @@ console.log(`module fields added: ${matches.length} (expected 158)`);
 - [ ] **Step 2: Run the script**
 
 ```bash
-cd C:/Code/Boskalis/temp/az900
+cd C:/Code/Boskalis/temp/sc900
 /c/Users/coek/AppData/Local/nvm/v24.14.1/node.exe add-modules.js
 ```
 
@@ -123,13 +123,13 @@ Expected: each block shows `topic:` line immediately followed by `module:` line 
 - [ ] **Step 4: Delete the temp script**
 
 ```bash
-rm C:/Code/Boskalis/temp/az900/add-modules.js
+rm C:/Code/Boskalis/temp/sc900/add-modules.js
 ```
 
 - [ ] **Step 5: Commit**
 
 ```bash
-cd C:/Code/Boskalis/temp/az900
+cd C:/Code/Boskalis/temp/sc900
 git add questions.js
 git commit -m "feat: add module field to all 158 questions"
 ```
@@ -139,19 +139,19 @@ git commit -m "feat: add module field to all 158 questions"
 ## Task 2: Add MODULE_URL and DOMAIN_MODULES constants
 
 **Files:**
-- Modify: `C:/Code/Boskalis/temp/az900/index.html` (JS constants section, after `PASS_THRESHOLD`)
+- Modify: `C:/Code/Boskalis/temp/sc900/index.html` (JS constants section, after `PASS_THRESHOLD`)
 
 - [ ] **Step 1: Add constants after the `PASS_THRESHOLD` line**
 
 Find this in `index.html`:
 ```js
-    const HISTORY_KEY    = 'az900-quiz-history';
+    const HISTORY_KEY    = 'sc900-quiz-history';
     const PASS_THRESHOLD = 0.70;
 ```
 
 Replace with:
 ```js
-    const HISTORY_KEY    = 'az900-quiz-history';
+    const HISTORY_KEY    = 'sc900-quiz-history';
     const PASS_THRESHOLD = 0.70;
 
     const MODULE_URL = {
@@ -195,7 +195,7 @@ git commit -m "feat: add MODULE_URL and DOMAIN_MODULES constants"
 ## Task 3: Extend userAnswers state and selectAnswer()
 
 **Files:**
-- Modify: `C:/Code/Boskalis/temp/az900/index.html`
+- Modify: `C:/Code/Boskalis/temp/sc900/index.html`
 
 - [ ] **Step 1: Update the state comment**
 
@@ -242,7 +242,7 @@ git commit -m "feat: track module per answer in userAnswers"
 ## Task 4: Add CSS for module panel
 
 **Files:**
-- Modify: `C:/Code/Boskalis/temp/az900/index.html` (CSS section, before `</style>`)
+- Modify: `C:/Code/Boskalis/temp/sc900/index.html` (CSS section, before `</style>`)
 
 - [ ] **Step 1: Add module panel CSS before `</style>`**
 
@@ -325,7 +325,7 @@ git commit -m "feat: add CSS for module breakdown panel"
 ## Task 5: Add HTML toggle button and panel to quiz screen
 
 **Files:**
-- Modify: `C:/Code/Boskalis/temp/az900/index.html` (quiz screen, after `#live-scores` div)
+- Modify: `C:/Code/Boskalis/temp/sc900/index.html` (quiz screen, after `#live-scores` div)
 
 - [ ] **Step 1: Add toggle button and panel div**
 
@@ -362,7 +362,7 @@ git commit -m "feat: add module panel HTML to quiz screen"
 ## Task 6: Add modId(), initModulePanel(), and toggleModulePanel()
 
 **Files:**
-- Modify: `C:/Code/Boskalis/temp/az900/index.html` (JS utilities section and startQuiz())
+- Modify: `C:/Code/Boskalis/temp/sc900/index.html` (JS utilities section and startQuiz())
 
 - [ ] **Step 1: Add modId() helper to Utilities section**
 
@@ -507,7 +507,7 @@ git commit -m "feat: add module panel toggle and init logic"
 ## Task 7: Extend updateLiveScores() to update module rows
 
 **Files:**
-- Modify: `C:/Code/Boskalis/temp/az900/index.html` (updateLiveScores function)
+- Modify: `C:/Code/Boskalis/temp/sc900/index.html` (updateLiveScores function)
 
 - [ ] **Step 1: Append module update logic to updateLiveScores()**
 
@@ -574,7 +574,7 @@ git commit -m "feat: update module scores live after each answer"
 ## Task 8: Add module breakdown to results screen
 
 **Files:**
-- Modify: `C:/Code/Boskalis/temp/az900/index.html` (results screen HTML + showResults() JS)
+- Modify: `C:/Code/Boskalis/temp/sc900/index.html` (results screen HTML + showResults() JS)
 
 - [ ] **Step 1: Add module breakdown card HTML to results screen**
 
@@ -720,14 +720,14 @@ git commit -m "feat: add module breakdown card to results screen"
 ## Task 9: Rebuild zip
 
 **Files:**
-- Modify: `C:/Code/Boskalis/temp/az900/az900-quiz.zip`
+- Modify: `C:/Code/Boskalis/temp/sc900/sc900-quiz.zip`
 
 - [ ] **Step 1: Rebuild the zip**
 
 ```bash
-cd C:/Code/Boskalis/temp/az900
-powershell -Command "Compress-Archive -Path index.html,questions.js -DestinationPath az900-quiz.zip -Force"
-ls -lh az900-quiz.zip
+cd C:/Code/Boskalis/temp/sc900
+powershell -Command "Compress-Archive -Path index.html,questions.js -DestinationPath sc900-quiz.zip -Force"
+ls -lh sc900-quiz.zip
 ```
 
 Expected: zip file updated, size around 40–45 KB.
@@ -735,6 +735,6 @@ Expected: zip file updated, size around 40–45 KB.
 - [ ] **Step 2: Commit**
 
 ```bash
-git add az900-quiz.zip
+git add sc900-quiz.zip
 git commit -m "chore: rebuild zip with module breakdown feature"
 ```

@@ -1,4 +1,4 @@
-# AZ-900 Study Insights — Design Spec
+# SC-900 Study Insights — Design Spec
 
 **Date:** 2026-04-02  
 **Status:** Approved

@@ -1,4 +1,4 @@
-# AZ-900 Microsoft Azure Fundamentals — Comprehensive Knowledge Summary
+# SC-900 Microsoft Security, Compliance, and Identity Fundamentals — Comprehensive Knowledge Summary
 
 > Source: Official MS Learn content, all 11 modules read in full.  
 > Purpose: Authoritative reference for writing nuanced, scenario-based exam questions.
@@ -761,7 +761,7 @@ Each layer slows attacks and provides alert information if breached.
 - Purpose: compared on-premises costs with projected Azure costs to estimate migration savings.
 - Accounted for: hardware, software, electricity, IT staff, and facilities.
 - Now retired — use **Azure Migrate's business case assessment** for on-premises-to-Azure cost comparison.
-- The concept of TCO comparison (justifying cloud migration with cost analysis) is still testable on AZ-900.
+- The concept of TCO comparison (justifying cloud migration with cost analysis) is still testable on SC-900.
 
 ### Microsoft Cost Management Tool
 - Checks actual resource costs in real time.
@@ -915,7 +915,7 @@ Every Azure service progresses through a defined lifecycle before (and after) re
 4. **Retirement** — Service reaches end-of-life. Microsoft gives advance notice (typically 12 months) before retiring a service and provides migration guidance to alternatives.
 
 **Key exam points**:
-- Public Preview features may be included on the AZ-900 exam if widely used.
+- Public Preview features may be included on the SC-900 exam if widely used.
 - SLAs apply only to GA services — not to Private or Public Preview.
 - Preview features should never be used for customer-facing production workloads without understanding the risk.
 - The Azure portal flags preview services clearly so users know they are not GA.

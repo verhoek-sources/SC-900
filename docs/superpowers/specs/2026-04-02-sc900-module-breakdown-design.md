@@ -1,4 +1,4 @@
-# AZ-900 Module Breakdown — Design Spec
+# SC-900 Module Breakdown — Design Spec
 
 **Date:** 2026-04-02  
 **Status:** Approved
@@ -7,7 +7,7 @@
 
 ## Overview
 
-Add MS Learn module tracking to the AZ-900 quiz app. Each question gets a `module` field (one of 11 short names). The quiz screen gains a collapsible live module breakdown panel; the results screen gains a module breakdown card below the existing domain breakdown.
+Add MS Learn module tracking to the SC-900 quiz app. Each question gets a `module` field (one of 11 short names). The quiz screen gains a collapsible live module breakdown panel; the results screen gains a module breakdown card below the existing domain breakdown.
 
 ---
 
