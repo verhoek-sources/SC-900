@@ -1,3 +1,4 @@
+// NOTE: Placeholder question bank imported from AZ-900 template. Replace with SC-900-aligned questions.
 const QUESTIONS = [
   // ── Cloud Concepts — LEARNING (15 questions) ───────────────────────
   {
